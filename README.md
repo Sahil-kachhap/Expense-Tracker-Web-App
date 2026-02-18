@@ -8,6 +8,7 @@ This project demonstrates:
 - Dockerization  
 - Deployment readiness  
 
+<video src="https://github.com/user-attachments/assets/0d09c7ff-579c-49c6-86c5-ebd716f04101" controls width="600"></video>
 ---
 
 ## 🚀 Features
