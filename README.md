@@ -83,7 +83,7 @@ Swagger docs available at:
 
 ---
 
-## 🐳 Run with entire project locally with a single command
+## 🐳 Run entire project locally with a single command
 
 From project root:
 
