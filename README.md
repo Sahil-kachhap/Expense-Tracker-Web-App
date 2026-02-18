@@ -134,5 +134,3 @@ GET    /api/expenses/export?format=excel
 
 ## 🏁 Summary
 This is a **full-stack, production-structured Expense Tracker** designed with maintainability, scalability, and real-world backend best practices in mind.
-
-This is a **full-stack, production-structured Expense Tracker** designed with maintainability, scalability, and real-world backend best practices in mind.
