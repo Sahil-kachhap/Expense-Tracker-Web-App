@@ -9,5 +9,5 @@ const formatter = new Intl.NumberFormat("en-IN", {
  * Format amount in cents to INR currency string
  */
 export function formatCurrency(amountInCents: number): string {
-  return formatter.format(amountInCents / 100);
+  return formatter.format(amountInCents);
 }

@@ -22,10 +22,9 @@ const createExpenseService = async (expenseData, idempotencyKeyHeader) => {
     return existingExpense; // Return previously created record
   }
 
-  const amountInCents = Math.round(expenseData.amount * 100);
 
   const payload = {
-    amount: amountInCents,
+    amount: expenseData.amount,
     category: expenseData.category,
     description: expenseData.description,
     date: expenseData.date,
@@ -49,17 +48,15 @@ const createExpenseService = async (expenseData, idempotencyKeyHeader) => {
 const getExpensesService = async (filters) => {
   const result = await getExpenses(filters);
 
-  // Convert cents → rupees
   const formattedExpenses = result.expenses.map((expense) => ({
     ...expense,
-    amount: expense.amount / 100,
+    amount: expense.amount,
   }));
 
-  const formattedTotal = result.total / 100;
 
   return {
     expenses: formattedExpenses,
-    total: formattedTotal,
+    total: result.total,
   };
 };
 
