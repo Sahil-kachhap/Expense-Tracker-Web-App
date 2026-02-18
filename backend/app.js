@@ -9,6 +9,10 @@ const morgan = require('morgan');
 const expenseRoutes = require('./routes/expenseRoute');
 const errorHandler = require('./middlewares/errorHandler');
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerSpec = require("./config/swagger");
+
+
 const app = express();
 
 // Security headers
@@ -22,6 +26,10 @@ app.use(morgan('dev'));
 
 // Parse JSON body
 app.use(express.json());
+
+// swagger docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 
 app.get('/health', (req, res) => {
