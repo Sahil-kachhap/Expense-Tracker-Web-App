@@ -28,6 +28,8 @@ const Index = () => {
     toast({ title: "Expense added", description: "Your expense has been recorded." });
   };
 
+  console.log("Has Expense: ", hasExpenses);
+
   return (
     <div className="min-h-screen bg-background">
       <div className="mx-auto max-w-[900px] px-4 py-8 sm:px-6 sm:py-12">
@@ -49,8 +51,7 @@ const Index = () => {
           <ExpenseForm onSubmit={handleSubmit} isSubmitting={isAdding} />
 
           <ExpenseSummary total={total} count={expenses.length} isFiltered={isFiltered} />
-
-          {hasExpenses && (
+          {(
             <ExpenseFilters
               filterCategory={filterCategory}
               onFilterChange={setFilterCategory}
