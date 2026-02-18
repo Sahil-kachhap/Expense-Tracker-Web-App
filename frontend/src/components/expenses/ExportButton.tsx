@@ -21,35 +21,43 @@ export function ExportButton({ filterCategory, sortOrder }: ExportButtonProps) {
 
   const handleExport = async (format: "csv" | "xlsx") => {
     setExporting(format);
+
     try {
-      const params = new URLSearchParams({ format, sort: sortOrder });
-      if (filterCategory !== "all") params.set("category", filterCategory);
+      const params = new URLSearchParams();
 
-      const projectId = import.meta.env.VITE_SUPABASE_PROJECT_ID;
-      const url = `https://${projectId}.supabase.co/functions/v1/export-expenses?${params}`;
+      params.set("format", format === "xlsx" ? "excel" : "csv");
+      params.set("sort", sortOrder === "oldest" ? "asc" : "desc");
 
-      const response = await fetch(url, {
-        headers: {
-          apikey: import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
-        },
-      });
+      if (filterCategory !== "all") {
+        params.set("category", filterCategory);
+      }
+
+      const response = await fetch(
+        `${
+          import.meta.env.VITE_API_URL
+        }/api/expenses/export?${params.toString()}`
+      );
 
       if (!response.ok) {
         const err = await response.json().catch(() => ({}));
-        throw new Error(err.error || "Export failed");
+        throw new Error(err.message || "Export failed");
       }
 
       const blob = await response.blob();
-      const downloadUrl = URL.createObjectURL(blob);
+
+      const downloadUrl = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = downloadUrl;
       a.download = `expenses.${format}`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(downloadUrl);
+      window.URL.revokeObjectURL(downloadUrl);
 
-      toast({ title: "Export complete", description: `Your ${format.toUpperCase()} file has been downloaded.` });
+      toast({
+        title: "Export complete",
+        description: `Your ${format.toUpperCase()} file has been downloaded.`,
+      });
     } catch (err: any) {
       toast({
         title: "Export failed",
@@ -64,7 +72,12 @@ export function ExportButton({ filterCategory, sortOrder }: ExportButtonProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm" className="gap-2" disabled={!!exporting}>
+        <Button
+          variant="outline"
+          size="sm"
+          className="gap-2"
+          disabled={!!exporting}
+        >
           {exporting ? (
             <Loader2 className="h-3.5 w-3.5 animate-spin" />
           ) : (
@@ -78,7 +91,10 @@ export function ExportButton({ filterCategory, sortOrder }: ExportButtonProps) {
           <FileText className="h-4 w-4" />
           Export as CSV
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => handleExport("xlsx")} className="gap-2">
+        <DropdownMenuItem
+          onClick={() => handleExport("xlsx")}
+          className="gap-2"
+        >
           <FileSpreadsheet className="h-4 w-4" />
           Export as Excel
         </DropdownMenuItem>
